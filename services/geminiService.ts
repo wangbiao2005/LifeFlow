@@ -110,6 +110,7 @@ const getRandomFallbackQuote = () => {
 
 export const generateDailyQuote = async (goals: Goal[]): Promise<{ text: string; author: string } | null> => {
   const config = getAIConfig();
+  // For Gemini, we strictly use process.env.API_KEY, ignoring config.apiKey
   if (config.provider !== 'gemini' && !config.apiKey) return getRandomFallbackQuote();
 
   const goalContext = goals.map(g => g.title).join(', ');
@@ -125,7 +126,7 @@ export const generateDailyQuote = async (goals: Goal[]): Promise<{ text: string;
   try {
     let resultText = "";
     if (config.provider === 'gemini') {
-      const apiKey = config.apiKey || process.env.API_KEY;
+      const apiKey = process.env.API_KEY;
       if (!apiKey) return getRandomFallbackQuote();
       const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
@@ -157,7 +158,7 @@ export const generateGoalPlan = async (goalTitle: string): Promise<{ description
   try {
     let resultText = "";
     if (config.provider === 'gemini') {
-      const apiKey = config.apiKey || process.env.API_KEY;
+      const apiKey = process.env.API_KEY;
       if (!apiKey) return null;
       const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
@@ -241,8 +242,8 @@ export const getCoachAdvice = async (message: string, context: CoachContext, mod
 
   try {
     if (config.provider === 'gemini') {
-      const apiKey = config.apiKey || process.env.API_KEY;
-      if (!apiKey) return "请检查 API Key 配置。";
+      const apiKey = process.env.API_KEY;
+      if (!apiKey) return "API Key 缺失。";
       const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
         model: config.modelName || DEFAULT_GEMINI_MODEL,
@@ -275,7 +276,7 @@ export const analyzeJournalEntry = async (content: string, mood: string, tags: s
 
   try {
     if (config.provider === 'gemini') {
-      const apiKey = config.apiKey || process.env.API_KEY;
+      const apiKey = process.env.API_KEY;
       if (!apiKey) return "";
       const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
@@ -326,7 +327,7 @@ export const generateJournalPrompt = async (context: CoachContext, currentMood?:
     try {
         let resultText = "";
         if (config.provider === 'gemini') {
-            const apiKey = config.apiKey || process.env.API_KEY;
+            const apiKey = process.env.API_KEY;
             if (!apiKey) return FALLBACK_PROMPTS[Math.floor(Math.random() * FALLBACK_PROMPTS.length)];
             const ai = new GoogleGenAI({ apiKey });
             const response = await ai.models.generateContent({

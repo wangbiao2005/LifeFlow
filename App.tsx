@@ -530,15 +530,9 @@ const App: React.FC = () => {
                                     </div>
                                 </div>
                                 
-                                <div>
-                                    <label className="text-xs font-bold text-slate-500 mb-1.5 block">API 密钥 (API Key)</label>
-                                    <div className="relative">
-                                        <input type="password" value={aiConfig.apiKey} onChange={(e) => setAiConfig(prev => ({ ...prev, apiKey: e.target.value }))} placeholder="粘贴你的 Gemini API Key" className="w-full text-xs p-3 pl-9 rounded-xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all font-mono" />
-                                        <Key size={14} className="absolute left-3 top-3 text-slate-400" />
-                                    </div>
-                                    <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-[10px] text-blue-600 font-bold hover:underline bg-blue-50 px-2 py-1 rounded-md border border-blue-100">
-                                        <ExternalLink size={10} /> 点击获取免费 Key (需登录 Google)
-                                    </a>
+                                <div className="p-3 bg-white rounded-xl border border-blue-100 text-xs text-blue-600/80 leading-relaxed flex gap-2">
+                                    <Info size={14} className="shrink-0 mt-0.5" />
+                                    <span>系统将自动使用环境变量 <code>process.env.API_KEY</code> 中的密钥。请确保您已在部署环境中正确配置。</span>
                                 </div>
 
                                 <div>
